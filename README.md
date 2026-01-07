@@ -1,95 +1,185 @@
-# Playschool App
+# Little Stars Playschool Website
 
-A simple Next.js application with Supabase authentication for a playschool.
+A modern, full-featured playschool website built with Next.js and Supabase. Features a public-facing website with photo gallery and an admin dashboard for managing content.
 
 ## Features
 
-- Email/password authentication with Supabase
+### Public Website
+- **Home Page**: Playschool information, about section, contact details, and opening hours
+- **Events Page**: Display upcoming playschool events
+- **Photo Gallery**: Browse photos organized by month and year
+- **Contact Form**: Send messages to the playschool (emails sent to wilbur1979@googlemail.com)
+- Fully responsive design with Tailwind CSS
+
+### Admin Dashboard
+- **Secure Authentication**: Admin-only access with Supabase Auth
+- **Photo Management**: Upload and delete photos with automatic organization by month/year
+- **Storage**: Integrated with Supabase Storage for reliable photo hosting
 - Protected routes with middleware
-- Simple hello world interface
-- Clean, modern UI with Tailwind CSS
+
+## Tech Stack
+
+- **Frontend**: Next.js 15 (App Router) with TypeScript
+- **Styling**: Tailwind CSS
+- **Authentication**: Supabase Auth
+- **Database**: Supabase PostgreSQL
+- **Storage**: Supabase Storage
+- **Deployment**: Vercel (optimized)
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+ installed
+- Node.js 18 or later
 - A Supabase account and project
+- A Vercel account (for deployment)
 
-### Setup
+### Local Development Setup
 
-1. Clone this repository
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/chris-wilbur-wilson/playschool.git
+   cd playschool
+   ```
 
-2. Install dependencies:
-```bash
-npm install
-```
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-3. Set up environment variables:
-   - Copy `.env.local.example` to `.env.local`
-   - Go to your [Supabase Dashboard](https://supabase.com/dashboard)
-   - Create a new project or select an existing one
-   - Go to Settings > API
-   - Copy your project URL and anon/public key
-   - Update `.env.local` with your values:
-     ```
-     NEXT_PUBLIC_SUPABASE_URL=your-project-url
-     NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-     ```
+3. **Set up environment variables**
 
-4. Run the development server:
-```bash
-npm run dev
-```
+   Copy `.env.local.example` to `.env.local`:
+   ```bash
+   cp .env.local.example .env.local
+   ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser
+   Update `.env.local` with your Supabase credentials:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+   ```
 
-### First Time Usage
+4. **Set up Supabase**
 
-1. You'll be redirected to the login page
-2. Click "Sign Up" to create a new account
-3. Enter your email and password
-4. Check your email for a confirmation link (if email confirmation is enabled in Supabase)
-5. Sign in with your credentials
-6. Click the "Say Hello!" button to see your personalized message
+   Follow the instructions in [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) to:
+   - Create the photos table
+   - Set up storage buckets
+   - Configure security policies
+   - Create your admin user
 
-## Deployment
+5. **Run the development server**
+   ```bash
+   npm run dev
+   ```
 
-### Deploy to Vercel
+   Open [http://localhost:3000](http://localhost:3000) in your browser
 
-The easiest way to deploy this app is using Vercel:
+## Deployment to Vercel
 
-1. Push your code to GitHub
-2. Import your repository to [Vercel](https://vercel.com)
-3. Add your environment variables in the Vercel project settings
-4. Deploy!
+1. **Push your code to GitHub**
 
-## Tech Stack
+2. **Import to Vercel**
+   - Go to [vercel.com](https://vercel.com)
+   - Click "New Project"
+   - Import your GitHub repository
+   - Select the `playschool` repository
 
-- **Frontend Framework**: Next.js 15 (App Router)
-- **Styling**: Tailwind CSS
-- **Authentication**: Supabase Auth
-- **Database**: Supabase (PostgreSQL)
-- **Language**: TypeScript
+3. **Configure Environment Variables**
+
+   Add the following environment variables in Vercel project settings:
+   - `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anon/public key
+
+4. **Deploy**
+
+   Click "Deploy" and wait for the build to complete
+
+5. **Update Supabase Settings**
+
+   In your Supabase dashboard:
+   - Go to Authentication → URL Configuration
+   - Update Site URL to your Vercel URL
+   - Add your Vercel URL to Redirect URLs
+
+## Usage
+
+### Public Access
+- Visit the homepage to view playschool information
+- Navigate to `/events` to see upcoming events
+- Browse `/gallery` to view photos organized by month
+- Use `/contact` to send a message
+
+### Admin Access
+- Navigate to `/admin/login`
+- Sign in with your admin credentials
+- Upload photos organized by month and year
+- Delete photos as needed
+- View all uploaded photos in the dashboard
 
 ## Project Structure
 
 ```
+playschool/
 ├── app/
-│   ├── login/          # Login page
-│   ├── page.tsx        # Home page (protected)
-│   ├── home-client.tsx # Client component for home
-│   └── layout.tsx      # Root layout
+│   ├── components/         # Reusable components
+│   │   └── Navigation.tsx  # Site navigation
+│   ├── admin/              # Admin area
+│   │   ├── login/          # Admin login page
+│   │   └── dashboard/      # Admin dashboard
+│   ├── contact/            # Contact page
+│   ├── events/             # Events page
+│   ├── gallery/            # Photo gallery
+│   ├── api/                # API routes
+│   │   └── contact/        # Contact form handler
+│   ├── page.tsx            # Home page
+│   └── layout.tsx          # Root layout
 ├── lib/
-│   └── supabase/       # Supabase client utilities
-│       ├── client.ts   # Browser client
-│       ├── server.ts   # Server client
-│       └── middleware.ts # Auth middleware
-└── middleware.ts       # Next.js middleware for route protection
+│   └── supabase/           # Supabase utilities
+│       ├── client.ts       # Browser client
+│       ├── server.ts       # Server client
+│       └── middleware.ts   # Auth middleware
+├── middleware.ts           # Route protection
+├── SUPABASE_SETUP.md      # Database setup guide
+└── README.md              # This file
 ```
+
+## Configuration
+
+### Contact Form
+The contact form currently logs submissions to the console. To enable email sending:
+
+1. Choose an email service (Resend, SendGrid, etc.)
+2. Update `/app/api/contact/route.ts`
+3. Add necessary API keys to environment variables
+
+### Customization
+- Update playschool name in `/app/components/Navigation.tsx`
+- Modify placeholder content in pages
+- Adjust colors in Tailwind classes (currently purple/pink theme)
+
+## Security
+
+- Admin routes are protected by middleware
+- Row Level Security (RLS) enabled on database
+- Storage buckets use policy-based access control
+- Environment variables keep credentials secure
+
+## Support
+
+For issues or questions:
+- Check [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) for setup help
+- Review Supabase dashboard for errors
+- Check browser console for client-side issues
+- Verify environment variables are set correctly
+
+## License
+
+This project is private and proprietary.
 
 ## Learn More
 
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Supabase Documentation](https://supabase.com/docs)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [Vercel Deployment](https://vercel.com/docs)
